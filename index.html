@@ -4,12 +4,13 @@
     <title>Runner Timer</title>
   </head>
   <body>
-    <h1>Input ms for each timer</h1>
-    <p>Run</p>
+    <h1>Input in seconds for each timer</h1>
+    <p>Run (seconds)</p>
     <input id='first' type="text" />
-    <p>Walk</p>
+    <p>Walk (seconds, optional)</p>
     <input id='second' type="text" /><br /><br />
-    <button id='play'>Start/stop</button>
+    <button id='play'>Start/stop</button><br /><br />
+    <div id='feedback'></div>
     <audio id='run'>
       <source src="run.wav" type="audio/wav" />
     </audio>
@@ -23,6 +24,7 @@
       const play = document.getElementById('play')
       const run = document.getElementById('run')
       const stop = document.getElementById('stop')
+      const feedback = document.getElementById('feedback')
       
       let interval, timeout
       let playing = false
@@ -34,10 +36,12 @@
         console.log('timer')
         let time
         if (which == run) {
+          feedback.innerHTML = 'Running'
           console.log('which was run')
           time = runValue
           which = stop
         } else {
+          feedback.innerHTML = 'Walking'
           console.log('which was stop')
           time = stopValue
           which = run
@@ -56,11 +60,13 @@
           console.log('manage stop')
           playing = false
           which = run
+          feedback.innerHTML = 'Stopped'
         } else {
           console.log('manage start')
-          runValue = parseInt(first.value)
-          stopValue = parseInt(second.value)
+          runValue = parseInt(first.value) * 1000
+          stopValue = parseInt(second.value) * 1000
           if (isNaN(runValue)) {
+            feedback.innerHTML = 'Only numbers are allowed'
             console.log('need number')
             return
           }
@@ -68,6 +74,7 @@
           playing = true
           run.play()
           if (isNaN(stopValue)) {
+            feedback.innerHTML = 'Running (no number found for Walk)'
             interval = setInterval(() => {
               run.play()
             }, runValue)

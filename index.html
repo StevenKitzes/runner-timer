@@ -33,16 +33,13 @@
       let runValue, stopValue
 
       function timer() {
-        console.log('timer')
         let time
         if (which == run) {
           feedback.innerHTML = 'Running'
-          console.log('which was run')
           time = runValue
           which = stop
         } else {
           feedback.innerHTML = 'Walking'
-          console.log('which was stop')
           time = stopValue
           which = run
         }
@@ -55,19 +52,15 @@
       play.addEventListener('click', () => {
         clearInterval(interval)
         clearTimeout(timeout)
-        console.log('button')
         if (playing) {
-          console.log('manage stop')
           playing = false
           which = run
           feedback.innerHTML = 'Stopped'
         } else {
-          console.log('manage start')
           runValue = parseInt(first.value) * 1000
           stopValue = parseInt(second.value) * 1000
           if (isNaN(runValue)) {
             feedback.innerHTML = 'Only numbers are allowed'
-            console.log('need number')
             return
           }
 

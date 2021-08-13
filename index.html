@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <meta charset="utf-8"> 
+    <title>Runner Timer</title>
+  </head>
+  <body>
+    <h1>Input ms for each timer</h1>
+    <p>Run</p>
+    <input id='first' type="text" />
+    <p>Walk</p>
+    <input id='second' type="text" /><br /><br />
+    <button id='play'>Start/stop</button>
+    <audio id='run'>
+      <source src="run.wav" type="audio/wav" />
+    </audio>
+    <audio id='stop'>
+      <source src="stop.wav" type="audio/wav" />
+    </audio>
+
+    <script type="text/javascript">
+      const first = document.getElementById('first')
+      const second = document.getElementById('second')
+      const play = document.getElementById('play')
+      const run = document.getElementById('run')
+      const stop = document.getElementById('stop')
+      
+      let interval, timeout
+      let playing = false
+      let which = run
+
+      let runValue, stopValue
+
+      function timer() {
+        console.log('timer')
+        let time
+        if (which == run) {
+          console.log('which was run')
+          time = runValue
+          which = stop
+        } else {
+          console.log('which was stop')
+          time = stopValue
+          which = run
+        }
+        timeout = setTimeout(() => {
+          which.play()
+          timer()
+        }, time)
+      }
+
+      play.addEventListener('click', () => {
+        clearInterval(interval)
+        clearTimeout(timeout)
+        console.log('button')
+        if (playing) {
+          console.log('manage stop')
+          playing = false
+          which = run
+        } else {
+          console.log('manage start')
+          runValue = parseInt(first.value)
+          stopValue = parseInt(second.value)
+          if (isNaN(runValue)) {
+            console.log('need number')
+            return
+          }
+
+          playing = true
+          run.play()
+          if (isNaN(stopValue)) {
+            interval = setInterval(() => {
+              run.play()
+            }, runValue)
+            return
+          } else {
+            timer()
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
